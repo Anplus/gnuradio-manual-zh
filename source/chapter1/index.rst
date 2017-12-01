@@ -7,3 +7,4 @@
     :numbered: 2
     
     build-instruction 
+    explore

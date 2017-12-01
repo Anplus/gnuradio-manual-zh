@@ -70,3 +70,23 @@ audio-windows
 **gr-log: Logging Tools (Optional)**
 
 * log4cpp (>= 1.0) http://log4cpp.sourceforge.net/
+
+构建
+-----
+GNURadio使用的是Cmake的构建系统，标准的构建过程是：
+
+.. code:: bash
+
+    $ mkdir $(builddir)
+    $ cd $(builddir)
+    $ cmake [OPTIONS] $(srcdir)
+    $ make
+    $ make test
+    $ sudo make install
+
+$(builddir)通常是$(srcdir)/build，是代码构建后的目录。
+
+CMake的选项
+~~~~~~~~~~~~
+
+CMake的选项用来指定那些不会被自动化找到的，需要依赖的库和include，(-DCMAKE_PREFIX_PATH)。或者，设置安装目录(-DCMAKE_INSTALL_PREFIX=(dir))。
