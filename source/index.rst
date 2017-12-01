@@ -13,3 +13,4 @@ AN Zhenlin, 2017
     :numbered: 3
     
     chapter1/index
+    mynote/index

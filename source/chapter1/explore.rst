@@ -90,5 +90,5 @@ GRC程序"fm_rx.grc"，对应着python脚本，"fm_demod.py"。
 * gr::analog::quadrature_demod_cf，把文件复数的FM信号转换成浮点信号。
 
 我们把200bps输入信号重采样到44.1kbps(语音速率)。因为这个重采样不能使用整数倍的抽取速率，所以我们使用了任意速率重采样器，
-gr::filter::pfb_arb_resampler_fff。将输出的信号以 :math:`44.1Khz`的采样率滤波到 :math:`15Khz`的带宽，然后利用
+gr::filter::pfb_arb_resampler_fff。将输出的信号以 :math:`44.1Khz` 的采样率滤波到 :math:`15Khz` 的带宽，然后利用
 gr::audio::sink 输出。
