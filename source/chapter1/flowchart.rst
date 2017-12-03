@@ -72,12 +72,105 @@ GNU Radio运行一个调度器来优化吞吐量。动态调度器使得成块�
     print tb.blk1.max_output_buffer(0)
     print tb.blk1.max_output_buffer(1)
 
+上面的接口blk0所有端口被设置成缓存为2000个items，而blk1只有端口1被设置了，其余为默认值。
 
+注意：
+
+* 在运行的开始，缓存的大小就被配置好了。
+* 一旦flowgraph开始，缓存长度对于一个block的值是不能被更改的，即使是lock()/unlock()。如果要改变缓存大小，必须删除block
+再重新建立。
+* 这可能影响到吞吐量。
+* 真实的缓存大小实际上是依赖于最小系统粒度。理论上就是一个页的大小，通常是4096bytes。
+这就意味着，由指令设置的缓存大小最终会四舍五入到最接近的系统粒度上。
 
 动态配置流程图
 --------------
-在通信系统运行的时候，经常需要根据输入信号改变系统的状态，这时候需要更新流图。更新流图有三步：
+在通信系统运行的时候，经常需要根据输入信号改变系统的状态，这时候需要更新流图。更新意味着改变结构，不独立的参数设置。
+例如， gr::blocks::add_const_cc中改变加的常量大小可以由调用'set_k(k)'完成。
+
+更新流图有三步：
+
 * 锁定，停止运行，处理数据
 * 更新
 * 解锁
 
+下面的例子展示了一个流图，首先加入两个gr::analog::noise_source_c，然后由gr::blocks::sub_cc替代gr::blocks::add_cc。
+
+.. code:: python
+
+    from gnuradio import gr, analog, blocks
+    import time
+    class mytb(gr.top_block):
+        def __init__(self):
+            gr.top_block.__init__(self)
+            self.src0 = analog.noise_source_c(analog.GR_GAUSSIAN, 1)
+            self.src1 = analog.noise_source_c(analog.GR_GAUSSIAN, 1)
+            self.add = blocks.add_cc()
+            self.sub = blocks.sub_cc()
+            self.head = blocks.head(gr.sizeof_gr_complex, 1000000)
+            self.snk = blocks.file_sink(gr.sizeof_gr_complex, "output.32fc")
+            self.connect(self.src0, (self.add,0))
+            self.connect(self.src1, (self.add,1))
+            self.connect(self.add, self.head)
+            self.connect(self.head, self.snk)
+        def main():
+            tb = mytb()
+            tb.start()
+            time.sleep(0.01)
+            # Stop flowgraph and disconnect the add block
+            tb.lock()
+            tb.disconnect(tb.add, tb.head)
+            tb.disconnect(tb.src0, (tb.add,0))
+            tb.disconnect(tb.src1, (tb.add,1))
+            # Connect the sub block and restart
+            tb.connect(tb.sub, tb.head)
+            tb.connect(tb.src0, (tb.sub,0))
+            tb.connect(tb.src1, (tb.sub,1))
+            tb.unlock()
+            tb.wait()
+        if __name__ == "__main__":
+            main()
+
+在更新flowchart的时候，最大输出items数量也可以被更改。一个block也可以调用'unset_max_noutput_items()' 来解锁限制恢复到全局值。
+下面的例子扩展了上面的例子，增加了设置最大输出items数量。
+
+.. code:: python
+
+    from gnuradio import gr, analog, blocks
+    import time
+    class mytb(gr.top_block):
+        def __init__(self):
+            gr.top_block.__init__(self)
+            self.src0 = analog.noise_source_c(analog.GR_GAUSSIAN, 1)
+            self.src1 = analog.noise_source_c(analog.GR_GAUSSIAN, 1)
+            self.add = blocks.add_cc()
+            self.sub = blocks.sub_cc()
+            self.head = blocks.head(gr.sizeof_gr_complex, 1000000)
+            self.snk = blocks.file_sink(gr.sizeof_gr_complex, "output.32fc")
+            self.connect(self.src0, (self.add,0))
+            self.connect(self.src1, (self.add,1))
+            self.connect(self.add, self.head)
+            self.connect(self.head, self.snk)
+        def main():
+            # Start the gr_top_block after setting some max noutput_items.
+            tb = mytb()
+            tb.src1.set_max_noutput_items(2000)
+            tb.start(100)
+            time.sleep(0.01)
+            # Stop flowgraph and disconnect the add block
+            tb.lock()
+            tb.disconnect(tb.add, tb.head)
+            tb.disconnect(tb.src0, (tb.add,0))
+            tb.disconnect(tb.src1, (tb.add,1))
+            # Connect the sub block
+            tb.connect(tb.sub, tb.head)
+            tb.connect(tb.src0, (tb.sub,0))
+            tb.connect(tb.src1, (tb.sub,1))
+            # Set new max_noutput_items for the gr_top_block
+            # and unset the local value for src1
+            tb.set_max_noutput_items(1000)
+            tb.src1.unset_max_noutput_items()
+            tb.unlock()
+            tb.wait()
+        if __name__ == "__main__":
+            main()
