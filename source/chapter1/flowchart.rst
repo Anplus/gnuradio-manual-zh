@@ -1,6 +1,6 @@
 
 处理流图
-=========
+=============
 
 操作流程图
 -----------
@@ -41,7 +41,7 @@ GNU Radio运行一个调度器来优化吞吐量。动态调度器使得成块�
 申请小的数据块就意味着会向调度器多次申请。
 这样做的副作用就是当block处理大量数据的时候会出现延迟。
 
-为了解决这个问题，gr_top_block可以限制block可以收到的数据量，也就是上一个block的输出数据量。
+为了解决这个问题，gr_top_block可以限制block可以收到的数据量，也就是上一个block的需要输出的数据量。
 一个block只能得到比这个数量少的采样点输入，所以相当于一个block的最大延迟。
 通过限制每次调用申请的数据量，我们相当于增加了调度器的负担，所以降低了全局效率。
 
@@ -54,7 +54,25 @@ GNU Radio运行一个调度器来优化吞吐量。动态调度器使得成块�
     # or
     tb.run(1000)
 
-使用
+使用这个方法，我们设置了一个全局的item数量限制。每个block可以通过'set_max_noutput_items(m)'，重写这个限制。
+
+.. code:: python
+
+    tb.flt.set_max_noutput_items(2000)
+    tb.run(1000)
+
+在一些情况下，可能想要限制输出缓存的大小。这个能够防止要输出的数据量过大超过了上限，而使得新的输出延迟。
+你可以为每个block的每个输出端口设置输出延迟。
+
+.. code:: python
+
+    tb.blk0.set_max_output_buffer(2000)
+    tb.blk1.set_max_output_buffer(1, 2000)
+    tb.start()
+    print tb.blk1.max_output_buffer(0)
+    print tb.blk1.max_output_buffer(1)
+
+
 
 动态配置流程图
 --------------

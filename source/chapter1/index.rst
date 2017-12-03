@@ -8,3 +8,5 @@
     
     build-instruction 
     explore
+    flowchart
+    
