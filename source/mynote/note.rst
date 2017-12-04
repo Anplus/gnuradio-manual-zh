@@ -20,3 +20,7 @@
 
 SBX子板的自动DC控制，在直接做ASK调制的时候，有长连1的时候，
 SBX子板会将长1调整成直流分量，从而使得ASK调制在接受端看起来是相反的。
+
+.. code:: python
+
+    self.source.set_auto_dc_offset(False)
