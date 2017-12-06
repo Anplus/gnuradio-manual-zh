@@ -55,7 +55,8 @@ string是一个比较特殊的类型，他的转化是特殊的方法。
 
     pmt::pmt_t P_str = pmt::string_to_symbol("spam");
     pmt::pmt_t P_str2 = pmt::intern("spam");
-    std::string str = pmt::symbol_to_string(P_str);
+    std::string 
+    str = pmt::symbol_to_string(P_str);
 
 pmt::intern是symbol_to_string的另外一种方法。
 

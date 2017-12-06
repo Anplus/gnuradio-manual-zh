@@ -10,4 +10,5 @@
     explore
     flowchart
     pmt
+    metadata
     
