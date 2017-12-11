@@ -27,7 +27,9 @@ SBX子板会将长1调整成直流分量，从而使得ASK调制在接受端看�
     self.source.set_auto_dc_offset(False)
 
 
-全双工
+SBX全双工
 --------
-SBX子板有两个天线：TX/RX和RX2。做全双工的时候，必须由RX2做接受。
-子板上只有一个transmit和一个receive，所以不支持两路都接收。
+
+SBX子板有两个天线：TX/RX和RX2，但是子板上只有一个transmit和一个receive。
+- 做全双工的时候，必须由RX2做接收，而且收发的工作频率可以不一致
+- 不支持两路都接收
