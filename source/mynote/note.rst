@@ -17,10 +17,17 @@
 
 注意
 ==========
-
+SBX子板的DC控制
+----------------
 SBX子板的自动DC控制，在直接做ASK调制的时候，有长连1的时候，
 SBX子板会将长1调整成直流分量，从而使得ASK调制在接受端看起来是相反的。
 
 .. code:: python
 
     self.source.set_auto_dc_offset(False)
+
+
+全双工
+--------
+SBX子板有两个天线：TX/RX和RX2。做全双工的时候，必须由RX2做接受。
+子板上只有一个transmit和一个receive，所以不支持两路都接收。
