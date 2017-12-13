@@ -72,7 +72,7 @@ https://kb.ettus.com/Software_Development_on_the_E310_and_E312
 
 .. code:: bash
 
-    git clone https://github.com/EttusReasech/uhd.git
+    git clone https://github.com/EttusResearch/uhd.git
     cd ./host
     mkdir build 
     cmake ./ -DENABLE_E300=ON

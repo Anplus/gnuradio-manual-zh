@@ -65,3 +65,26 @@ Connecting Messages through the Flowgraph
 
 这个机制的接口是独立于数据流的，所以创建模块的时候不需要
 
+
+Code Examples
+----------------------------------
+下面利用gr::blocks::message_debug 和 gr::blocks::tagged_stream_to_pdu 。
+gr::blocks::message_debug模块是用来调试消息传递的模块。有三个输入口：
+
+- print，打印所有信息到标准输出流。
+- store，把消息存储到list里，和gr::blocks::message_debug::get_message(int i)连接，取出第i个消息。
+- pdu_print，把PDU消息转化成标准流。
+
+.. code:: c++
+
+    {
+        message_port_register_in(pmt::mp("print"));
+        set_msg_handler(pmt::mp("print"),
+        boost::bind(&message_debug_impl::print, this, _1));
+        message_port_register_in(pmt::mp("store"));
+        set_msg_handler(pmt::mp("store"),
+        boost::bind(&message_debug_impl::store, this, _1));
+        message_port_register_in(pmt::mp("print_pdu"));
+        set_msg_handler(pmt::mp("print_pdu"),
+        boost::bind(&message_debug_impl::print_pdu, this, _1));
+    }
