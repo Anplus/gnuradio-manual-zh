@@ -153,6 +153,44 @@ E310,E312,E313的FPGA的硬件版本都是e3x0。
 
 * 方案二，升级USRP的UHD版本。
 
+- 首先格式化SD卡
+
+http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html
+
+.. code:: bash
+
+    sudo umount /dev/sdb1
+    sudo mkdosfs -F 32 -v /dev/sdb1
+
+Read more: http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html#ixzz52HCPfTVQ  
+
+- 然后写入SD卡的镜像文件
+
+.. code:: bash
+
+    sudo dd if=sdimage-gnuradio-dev.direct of=/dev/<yoursdcard> bs=1M
+
+<yoursdcard>可以用fdisk -l或者df看到。
+
+- 配置ip信息
+USB串口进入设备，在设备内更新网络配置文件。
+
+.. code:: bash
+
+    cd etc/network
+    vi interface
+
+在auto eth0后面加入
+
+.. code:: bash  
+
+    iface eth0 inet static
+        address 192.168.10.10
+        network 255.255.255.0
+        gateway 192.168.10.1
+
+
+
 BladeRF环境配置
 ================
 
