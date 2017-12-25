@@ -153,7 +153,7 @@ E310,E312,E313的FPGA的硬件版本都是e3x0。
 
 * 方案二，升级USRP的UHD版本。
 
-- 首先格式化SD卡
+    - 首先格式化SD卡
 
 http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html
 
@@ -164,7 +164,7 @@ http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html
 
 Read more: http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html#ixzz52HCPfTVQ  
 
-- 然后写入SD卡的镜像文件
+    - 然后写入SD卡的镜像文件
 
 .. code:: bash
 
@@ -172,7 +172,7 @@ Read more: http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html
 
 <yoursdcard>可以用fdisk -l或者df看到。
 
-- 配置ip信息
+    - 配置ip信息
 USB串口进入设备，在设备内更新网络配置文件。
 
 .. code:: bash
