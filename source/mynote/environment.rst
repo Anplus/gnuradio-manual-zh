@@ -171,10 +171,12 @@ Read more: http://www.arthurtoday.com/2013/10/ubuntu-mkdosfs-format-sd-card.html
 <yoursdcard>可以用fdisk -l或者df看到。
 
 **配置ip信息**
+
 USB串口进入设备，在设备内更新网络配置文件。
 
 .. code:: bash
 
+    sudo screen /dev/ttyUSB0 115200
     cd etc/network
     vi interface
 
