@@ -186,7 +186,7 @@ USB串口进入设备，在设备内更新网络配置文件。
 
     iface eth0 inet static
         address 192.168.10.10
-        network 255.255.255.0
+        netmask 255.255.255.0
         gateway 192.168.10.1
 
 
