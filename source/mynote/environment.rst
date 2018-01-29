@@ -12,7 +12,7 @@ SDR Live
 https://wiki.gnuradio.org/index.php/GNU_Radio_Live_SDR_Environment
 
 使用自动化脚本
--------------
+--------------------
 
 这种方式也很方便。前人写好的自动化脚本完成了从源代码的下载，编译和安装几个步骤。过程很慢，要有心理准备。
 
