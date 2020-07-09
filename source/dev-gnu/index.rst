@@ -6,6 +6,6 @@ GNURadio开发教程
     :maxdepth: 2
     :numbered: 2
     
-    Develop
+    develop
     
     

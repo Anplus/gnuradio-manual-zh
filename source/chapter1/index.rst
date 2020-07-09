@@ -1,5 +1,5 @@
 
-官方文档
+GNURadio文档
 ==============
 
 .. toctree::
@@ -9,6 +9,7 @@
     build-instruction 
     explore
     flowchart
+    block
     pmt
     metadata
     
