@@ -70,10 +70,9 @@ Basic Block
 --------------
 
 
-.. code-block::cpp
+.. code-block:: cpp
 
     #include <gr_block.h>
-
     class my_basic_block : public gr_block
     {
     public:
