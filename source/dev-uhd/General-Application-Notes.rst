@@ -4,16 +4,16 @@ Multiple USRP Connection and Configuration
 Network Connection
 --------------------
 - 如果有两张网卡，可以将两张网卡配置在不同网段，然后两个USRP分别配置在两个网段里，然后在一个gnuradio脚本里直接访问。
-- 如果多台PC用交换机访问每个USRP，需要将多张网卡配置在一个网段里，还要指定每个网卡的UHD通信端口，
-端口不能冲突，否则UHD只能找到一个设备。
-
-
+- 如果多台PC用交换机访问每个USRP，需要将多张网卡配置在一个网段里，还要指定每个网卡的UHD通信端口，端口不能冲突，否则UHD只能找到一个设备。
 
 
 
 MIMO  Wire Connection
 -----------------------
+USRP可以利用MIMO线将两台USRP同步。
 
+Clock Source 
+-----------------------
 
 Tuning Notes
 ====================

@@ -12,8 +12,8 @@ AN Zhenlin, 2020
     :maxdepth: 2
     :numbered: 3
     
-    dev/index
-    UHD/index
-    chapter1/index
-    mynote/index
+    note-gnuradio/index
+    dev-gnuradio/index
+    dev-uhd/index
 
+第一部分，GNURadio的指导手册和源码阅读。整理了GNURadio的基本结构和常用的模块。第二部分整理了笔者实际做GNURadio开发过程中遇到的问题，包括环境的搭建和代码调试。第三部分是UHD的开发部分。UHD是ettus公司开发的USRP的驱动。射频的低层配置需要有UHD完成。

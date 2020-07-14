@@ -1,6 +1,6 @@
 
-GNURadio文档
-==============
+GNURadio源码手册
+===================
 
 .. toctree::
     :maxdepth: 2
@@ -9,7 +9,9 @@ GNURadio文档
     build-instruction 
     explore
     flowchart
+    scheduler
     block
     pmt
     metadata
+    agc
     
