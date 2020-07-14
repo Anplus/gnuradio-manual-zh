@@ -2,7 +2,7 @@
 GNURadio-Manual中文文档
 ==============================================
 
-个人整理的GNURadio中文文档以及学习笔记。GNURadio版本为3.7.2。
+个人整理的GNURadio中文文档以及学习笔记。GNURadio版本为3.7.10，https://www.gnuradio.org/doc/doxygen-v3.7.10.0/dir_05c3040209450f1dcdb347a8089b09d4.html。
 
 AN Zhenlin, 2020
 
