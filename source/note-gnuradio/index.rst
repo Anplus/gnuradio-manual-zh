@@ -6,12 +6,13 @@ GNURadio源码手册
     :maxdepth: 2
     :numbered: 2
     
-    build-instruction 
-    explore
-    flowchart
-    scheduler
-    block
-    pmt
-    metadata
-    agc
+    1-build-instruction 
+    2-explore
+    3-flowchart
+    0-1-block
+    0-2-scheduler
+    0-3-agc
+    4-pmt
+    5-metadata
+    6-message
     
