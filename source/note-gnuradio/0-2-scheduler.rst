@@ -108,11 +108,10 @@ Stream Tags 调度
 
 Steam tags是帮助block标记和识别处理过的数据。对于一个指定的samples，我们打上一些tag。tag会逐级传递。随着data rate的变化，tag的位置会更新。tag_propagation_policy标签的传递规则是有block的构造器控制的。tag的处理是在general_work后面。tag_propagation_policy有两种TPP_ALL_TO_ALL和TPP_ONE_TO_ONE。第一种会把所有Tag都标上每一个samples，后一种是一对一的。
 
+
 .. image:: ../fig/scheduler-tag.png
 
- **总结**
-
-调度器需要完成一下的任务：
+综上，调度器需要完成以下的任务：
 
  * 计算input有多少可用的点
  * 计算output有多空间
