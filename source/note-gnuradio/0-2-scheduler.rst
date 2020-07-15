@@ -46,15 +46,15 @@ input_items 是一个vector包含一组指针指向input buffer。output_items �
 work函数指定了input和output的关系。通过noutput_items确定ninput_items。有了这些知识，我们开始看scheduler的工作方式。
 
 
-Scheduler block
+Scheduler的基本功能
 ---------------------
 
-Block之间会传递data，messages，tags。对于Data，blocks有几个需求：alignment，output multiple，forecast，history。alignment和output multiple都是为了控制输出的数据量要满足一定的倍数。forecase和history都是控制buffer的数据满足读取的需求。GNURadio的调度器会处理block的需求，以及控制buffer缓冲区。除此之外，buffer，messages流和stream tags也会由调度器控制。调度器主要控制缓冲区大小和延迟。
+GNURadio的调度器会处理block的需求也就是对于数据流和数据指针的调度，以及控制buffer缓冲区的大小。除此之外，buffer，messages流和stream tags也会由调度器控制。Block之间会传递三种类型的数据：采样点数据data，消息messages，数据标签tags。下面我们分别看一下，对于三种类型，调度器需要作什么。
 
 Data调度
 ^^^^^^^^^^^^^
 
-调度器调度数据主要就是满足alignment，output multiple，forecast，history的需求。
+对于Data，blocks有几个需求：alignment，output multiple，forecast，history。alignment和output multiple都是为了控制输出的数据量要满足一定的倍数。forecase和history都是控制buffer的数据满足读取的需求。调度器调度数据主要就是满足alignment，output multiple，forecast，history的需求。
 
 .. image:: ../fig/scheduler-4.png
 
@@ -77,8 +77,10 @@ Data调度
 
 经过这样的forecast设置，可以保证输入满足输出的需求。
 
-Buffer and Controlling flow and latency
+Buffer和latency调度
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+调度器也会控制缓冲区大小和延迟。又一下几个方法完成。
 
 .. code-block:: cpp
 
@@ -94,19 +96,12 @@ Buffer and Controlling flow and latency
     // On most systems, will round to nearest page size.
     set_min_output_buffer(long)
 
-Scheduler manages the Data stream Condition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
- * 计算input有多少可用的点
- * 计算output有多空间
- * 确定限制条件: history, alignment, forecast
- * call general_work，给block恰当的指针和数据
- * 从general_work的返回值更新指针
-
 Messages调度
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-每个block可以创建自己的Messages queue。当messages传递的时候，messages会放到subscriber的queue里。Messags的优先级是高于data的，在后面的整体操作流程中，优先处理messages。调度器dispatch处理messags是通过调用block的handler实现的。Messags的queue大小是由max_nmsgs控制的。
+Message可以用来传递一些控制信息，或者数据包Packet Unit Data。每个block可以创建自己的Messages queue。当messages传递的时候，messages会放到subscriber的queue里。Messags的优先级是高于data的，在后面的整体操作流程中，优先处理messages。调度器dispatch处理messags是通过调用block的handler实现的。Messags的queue大小是由max_nmsgs控制的。
+
+.. image:: ../fig/scheduler-msg.png
 
 Stream Tags 调度
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -115,7 +110,16 @@ Steam tags是帮助block标记和识别处理过的数据。对于一个指定�
 
 .. image:: ../fig/scheduler-tag.png
 
+ **总结**
 
+调度器需要完成一下的任务：
+
+ * 计算input有多少可用的点
+ * 计算output有多空间
+ * 确定限制条件: history, alignment, forecast
+ * 必要的调整或者重试
+ * call general_work，给block恰当的指针和数据
+ * 从general_work的返回值更新指针
 
 Scheduler Flow Chart
 ---------------------------
