@@ -1,7 +1,7 @@
 AGC自动增益控制
 ================
 
-这里整理一下GNURadio的自动增益控制是如何实现的。自动增益控制模块是在analog大类里实现，并一共定义了三种自动增益控制: agc，agc2，agc3。agc是最普通的自动增益控制,agc，agc2增加了attack和decay控制。attack指的是agc可以多快的响应功率迅速增加的信号，decay指的是agc可以多快的响应功率迅速减小的信号。
+这里整理一下GNURadio的自动增益控制是如何实现的。自动增益控制模块是在analog大类里实现，并一共定义了三种自动增益控制: agc，agc2，agc3。agc是最普通的自动增益控制,agc，agc2增加了attack和decay控制。attack指的是agc可以多快的响应功率迅速增加的信号，decay指的是agc可以多快的响应功率迅速减小的信号。这两个时间决定了AGC的带宽。通常来说，我们要求AGC的带宽要小于信号的最小频率，这样才不会影响信号的解调。
 
 .. code-block:: cpp
 
