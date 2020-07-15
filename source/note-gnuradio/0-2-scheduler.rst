@@ -1,15 +1,15 @@
 GNURadio scheduler
 ======================
 
-GNURadio的scheduler是数据流调度的核心。这个部分的文档很少，本文主要参考 gnuradio-note_ 的slides，以及笔者的一些源码阅读。
+GNURadio的scheduler是数据流调度的核心。gnuradio的官方文档和教程关于这个部分的介绍很少。为了解释清楚调度器，本文参考了gnuradio的其中一个作者Tom Rondeau的slides： gnuradio-note_ ，以及笔者的一些源码阅读。
 
 .. _gnuradio-note: http://www.trondeau.com/blog/2013/9/15/explaining-the-gnu-radio-scheduler.html
 
-首先看一个例子。两个数据流经过同步模块，再经过十倍欠采样模块，最后输出。
+首先看一个例子，后面的讨论都会基于这个简单的例子。创建两个数据流经过一个同步模块，再经过一个十倍欠采样模块，最后输出。
 
 .. image:: ../fig/scheduler-1.png
 
-对于每个模块之间，调度器都会维护一个buffer。对于一个block输入是input buffer，输出是output buffer。在output区，block利用Wptr指针写数据；在input区，block利用Rptr指针读取数据。
+在gnuradio里，对于每个模块之间，调度器都会维护一个buffer。对于一个block输入是input buffer，输出是output buffer。在output区，block利用Wptr指针写数据；在input区，block利用Rptr指针读取数据。
 
 .. image:: ../fig/scheduler-2.png
 
@@ -51,7 +51,8 @@ Scheduler block
 
 Block之间会传递data，messages，tags。对于Data，blocks有几个需求：alignment，output multiple，forecast，history。alignment和output multiple都是为了控制输出的数据量要满足一定的倍数。forecase和history都是控制buffer的数据满足读取的需求。GNURadio的调度器会处理block的需求，以及控制buffer缓冲区。除此之外，buffer，messages流和stream tags也会由调度器控制。调度器主要控制缓冲区大小和延迟。
 
- ** Data调度**
+Data调度
+^^^^^^^^^^^^^
 
 调度器调度数据主要就是满足alignment，output multiple，forecast，history的需求。
 
@@ -76,7 +77,8 @@ Block之间会传递data，messages，tags。对于Data，blocks有几个需求�
 
 经过这样的forecast设置，可以保证输入满足输出的需求。
 
-**Buffer and Controlling flow and latency**
+Buffer and Controlling flow and latency
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: cpp
 
@@ -92,7 +94,8 @@ Block之间会传递data，messages，tags。对于Data，blocks有几个需求�
     // On most systems, will round to nearest page size.
     set_min_output_buffer(long)
 
- **Scheduler manages the Data stream Condition**
+Scheduler manages the Data stream Condition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
  * 计算input有多少可用的点
  * 计算output有多空间
@@ -100,11 +103,13 @@ Block之间会传递data，messages，tags。对于Data，blocks有几个需求�
  * call general_work，给block恰当的指针和数据
  * 从general_work的返回值更新指针
 
- ** Messages调度**
+Messages调度
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 每个block可以创建自己的Messages queue。当messages传递的时候，messages会放到subscriber的queue里。Messags的优先级是高于data的，在后面的整体操作流程中，优先处理messages。调度器dispatch处理messags是通过调用block的handler实现的。Messags的queue大小是由max_nmsgs控制的。
 
- ** Stream Tags 调度**
+Stream Tags 调度
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Steam tags是帮助block标记和识别处理过的数据。对于一个指定的samples，我们打上一些tag。tag会逐级传递。随着data rate的变化，tag的位置会更新。tag_propagation_policy标签的传递规则是有block的构造器控制的。tag的处理是在general_work后面。tag_propagation_policy有两种TPP_ALL_TO_ALL和TPP_ONE_TO_ONE。第一种会把所有Tag都标上每一个samples，后一种是一对一的。
 
